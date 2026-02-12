@@ -171,10 +171,6 @@ const App: React.FC = () => {
     const weeklyTasks = useMemo(() => state.tasks.filter(t => t.period === 'weekly'), [state.tasks]);
     const dailyTasks = useMemo(() => state.tasks.filter(t => t.period === 'daily' && new Date(t.date).toDateString() === new Date().toDateString()), [state.tasks]);
 
-    if (pomodoroTask) {
-        return <PomodoroTimer task={pomodoroTask} onComplete={(isCompleted) => handleTaskCompletion(pomodoroTask, isCompleted)} onStop={() => setPomodoroTask(null)} />;
-    }
-
     return (
         <div className="min-h-screen flex flex-col transition-colors duration-300 bg-slate-50 dark:bg-black">
             <Header />
@@ -293,6 +289,15 @@ const App: React.FC = () => {
 
             {isShortcutsHelpOpen && (
                 <ShortcutsHelp onClose={() => setShortcutsHelpOpen(false)} />
+            )}
+
+            {pomodoroTask && (
+                <PomodoroTimer
+                    task={pomodoroTask}
+                    onComplete={(isCompleted) => handleTaskCompletion(pomodoroTask, isCompleted)}
+                    onStop={() => setPomodoroTask(null)}
+                    startMinimized
+                />
             )}
         </div>
     );
